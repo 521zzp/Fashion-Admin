@@ -12,6 +12,7 @@ app.use(createLoading());
 app.use(require('D:/Developer/project/Fashion-Admin/node_modules/dva-immer/lib/index.js').default());
 app.model({ namespace: 'global', ...(require('D:/Developer/project/Fashion-Admin/src/models/global.js').default) });
 app.model({ namespace: 'analysis', ...(require('D:/Developer/project/Fashion-Admin/src/pages/dashboard/models/analysis.js').default) });
+app.model({ namespace: 'product', ...(require('D:/Developer/project/Fashion-Admin/src/pages/dashboard/product/models/product.js').default) });
 app.model({ namespace: 'stores', ...(require('D:/Developer/project/Fashion-Admin/src/pages/dashboard/stores/models/stores.js').default) });
 
 class DvaContainer extends Component {

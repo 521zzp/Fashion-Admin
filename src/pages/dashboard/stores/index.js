@@ -2,6 +2,7 @@ import styles from './stores.css';
 import { Card, Table, Tag, Icon, Button, Switch } from 'antd';
 import { connect } from 'dva';
 import StoreEditModal from '@/components/stores/StoreEditModal'
+import { arrAddKey } from '@/utils/tool'
 
 function Index({
   stores, edit_store, operate_type, open
@@ -23,7 +24,7 @@ function Index({
         console.log('text',text)
         const temp = [].concat(text)
         temp.sort((a,b) => a.order - b.order)
-        return temp.map( (el,index) => <Tag key={index} color="#87d068">{el.order}.{el.name}</Tag>)
+        return temp.map( (el,index) => <Tag key={index}  color="#87d068">{el.order}.{el.name}</Tag>)
       }
     },
     {
@@ -31,6 +32,7 @@ function Index({
       dataIndex: 'status',
       render: (text, row, index) => <Switch
         checkedChildren="营业中" unCheckedChildren="停业中"
+        onChange={ (checked) => changeStoreStatus(row._id, checked) }
         checked = {text === 'on'}
         />
     },
@@ -42,15 +44,35 @@ function Index({
   ]
 
 
-
+  // 打开编辑门店
   const openEditModal = (obj) => {
     dispatch({
       type: 'stores/openEditModal',
       payload: {
         edit_store: obj,
-        operate_type: 'edit',
+        operate_type: 'update',
         open: true
       }
+    })
+  }
+
+  //打开新增门店
+  const openAddModal = () => {
+    dispatch({
+      type: 'stores/openEditModal',
+      payload: {
+        edit_store: {},
+        operate_type: 'add',
+        open: true
+      }
+    })
+  }
+
+  // 保存更新门店设置
+  const saveStoreChange = (obj) => {
+    dispatch({
+      type: 'stores/saveStoreChange',
+      payload: obj
     })
   }
 
@@ -65,12 +87,39 @@ function Index({
     })
   }
 
+  // 添加产品类型
+  const addProductGroup = (obj) => {
+    dispatch({
+      type: 'stores/addProductGroup',
+      payload: obj
+    })
+  }
+  // 删除产品类型
+  const deleteProductGroup = (_id, name) => {
+    dispatch({
+      type: 'stores/deleteProductGroup',
+      payload: { name }
+    })
+  }
+
+
+  // 更新门店状态
+  const changeStoreStatus = (_id, status) => {
+    dispatch({
+      type: 'stores/storeStatusChange',
+      payload: { _id, status: status ? 'on' : 'off' }
+    })
+  }
+
   return (
     <Card className={styles.normal} bordered={ false }>
-      <div style={{ marginBottom: '20px'}}><Button type="primary" icon="plus" >新增门店</Button></div>
-      <Table columns={ columns } dataSource={ stores } pagination={false}></Table>
+      <div style={{ marginBottom: '20px'}}><Button type="primary" icon="plus" onClick={openAddModal}>新增门店</Button></div>
+      <Table columns={ columns } dataSource={ arrAddKey(stores) } pagination={false}></Table>
 
-      <StoreEditModal init={edit_store} visible={open} operate_type={operate_type} close={closeModal}/>
+      <StoreEditModal init={edit_store} visible={open} ok={saveStoreChange}
+                      deleteProductGroup = { deleteProductGroup }
+                      addProductGroup = { addProductGroup }
+                      operate_type={operate_type} close={closeModal}/>
     </Card>
   );
 }
@@ -78,6 +127,7 @@ function Index({
 function mapStateToProps(state) {
   const { stores, edit_store, operate_type, open } = state.stores;
   console.log('open', open)
+  console.log('stores',stores)
   return {
     stores, edit_store, operate_type, open
   }

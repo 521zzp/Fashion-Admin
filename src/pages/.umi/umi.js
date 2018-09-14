@@ -1,7 +1,7 @@
 import '../../../node_modules/umi-plugin-polyfills/lib/global.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../../global.css';
+
 
 
 
@@ -30,7 +30,7 @@ Promise.all(moduleBeforeRendererPromises).then(() => {
   }
 });
 
-
+require('../../global.css');
 
 // hot module replacement
 if (module.hot) {

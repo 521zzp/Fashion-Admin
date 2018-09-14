@@ -22,4 +22,10 @@ export default {
 		}
     ],
   ],
+  "proxy": {
+    "/api": {
+      "target": "http://192.165.6.235:4100",
+      "changeOrigin": true,
+    }
+  }
 };

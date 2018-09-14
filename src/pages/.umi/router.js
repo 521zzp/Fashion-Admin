@@ -54,9 +54,7 @@ let routes = [
 export default function() {
   return (
 <Router history={window.g_history}>
-      <Route render={({ location }) =>
-        renderRoutes(routes, {}, { location })
-      } />
+      { renderRoutes(routes, {}) }
     </Router>
   );
 }

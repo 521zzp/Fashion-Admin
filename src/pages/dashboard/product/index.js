@@ -1,6 +1,15 @@
 import { Card, Table, Tag, Icon, Button, Switch } from 'antd';
+import { connect } from 'dva';
+import { arrAddKey } from '@/utils/tool'
+import ProductModal from '@/components/product/ProductModal'
 
-export default function () {
+function Index ({
+  list_loading,
+  product_list,
+  edit_info,
+  operate_type,
+  open,
+}) {
 
   const columns = [
     {
@@ -48,7 +57,22 @@ export default function () {
   return (
     <Card bordered={false}>
       <div style={{ marginBottom: '20px'}}><Button type="primary" icon="plus" >新增产品</Button></div>
-      <Table columns={ columns } dataSource={ [] } pagination={false}></Table>
+      <Table columns={ columns } dataSource={ arrAddKey(product_list) } pagination={false} loading={ list_loading }></Table>
+      <ProductModal />
     </Card>
   )
 }
+
+
+function mapStateToProps(state) {
+  const { list_loading, product_list, edit_info, operate_type, open } = state.product;
+  return {
+    list_loading,
+    product_list,
+    edit_info,
+    operate_type,
+    open,
+  }
+}
+
+export default connect(mapStateToProps)(Index);
