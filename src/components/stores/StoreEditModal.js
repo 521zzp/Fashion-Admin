@@ -19,7 +19,6 @@ function StoreEditModal({
   }
 }) {
 
-  console.log('visible', visible)
 
   const onOk = () => {
     validateFields(['name'],(err, values) => {

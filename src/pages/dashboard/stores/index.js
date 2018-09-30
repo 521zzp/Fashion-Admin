@@ -30,7 +30,7 @@ function Index({
     {
       title: '经营状态',
       dataIndex: 'status',
-      render: (text, row, index) => <Switch
+      render: (text, row) => <Switch
         checkedChildren="营业中" unCheckedChildren="停业中"
         onChange={ (checked) => changeStoreStatus(row._id, checked) }
         checked = {text === 'on'}
